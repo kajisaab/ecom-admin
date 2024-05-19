@@ -2,13 +2,13 @@ package com.kajisaab.ecommerce.feature.auth.usecase;
 
 import com.kajisaab.ecommerce.core.exception.BadRequestException;
 import com.kajisaab.ecommerce.core.jwt.JwtService;
-import com.kajisaab.ecommerce.core.responseHandler.ResponseHandler;
+import com.kajisaab.ecommerce.core.responsehandler.ResponseHandler;
 import com.kajisaab.ecommerce.core.usecase.Usecase;
 import com.kajisaab.ecommerce.core.validation.ValidationUtils;
 import com.kajisaab.ecommerce.feature.auth.entity.User;
 import com.kajisaab.ecommerce.feature.auth.repository.UserRepository;
-import com.kajisaab.ecommerce.feature.auth.usecase.request.SigninRequest;
-import com.kajisaab.ecommerce.feature.auth.usecase.response.SigninResponse;
+import com.kajisaab.ecommerce.feature.auth.usecase.request.SignInRequest;
+import com.kajisaab.ecommerce.feature.auth.usecase.response.SignInResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
@@ -20,7 +20,7 @@ import java.util.Objects;
 
 @Service
 @RequiredArgsConstructor
-public class SigninUsecase implements Usecase<SigninRequest, SigninResponse> {
+public class SigninUsecase implements Usecase<SignInRequest, SignInResponse> {
 
     @Autowired
     private Environment env;
@@ -30,19 +30,19 @@ public class SigninUsecase implements Usecase<SigninRequest, SigninResponse> {
     private final JwtService jwtService;
 
     @Override
-    public ResponseEntity<SigninResponse> execute(SigninRequest request) {
+    public ResponseEntity<SignInResponse> execute(SignInRequest request) {
         String violations = ValidationUtils.validate(request);
         if (!Objects.isNull(violations)) {
             throw new BadRequestException(violations);
         }
 
         boolean isEmail;
-        isEmail = request.getEmailOrUsername().contains("@") && request.getEmailOrUsername().contains(".");
-        User user = userRepository.findByEmailAndUserName(request.getEmailOrUsername());
+        isEmail = request.getUserId().contains("@") && request.getUserId().contains(".");
+        User user = userRepository.findByEmailAndUserName(request.getUserId());
 
 
         if(user == null){
-            throw new BadRequestException("User with " + request.getEmailOrUsername() + (isEmail ? " email " : " username ") + "not found");
+            throw new BadRequestException("User with " + request.getUserId() + (isEmail ? " email " : " username ") + "not found");
         }
 
         String accessJwtToken = "";
@@ -57,10 +57,13 @@ public class SigninUsecase implements Usecase<SigninRequest, SigninResponse> {
         }
 
         accessJwtToken  = jwtService.generateToken(user);
+
         refreshJwtToken = jwtService.generateToken(user, env.getProperty("spring.env.token.refreshSecretKey"), 2592000000L);
 
+        userRepository.updateRefreshToken(refreshJwtToken, user.getEmail());
 
-        SigninResponse response = new SigninResponse(accessJwtToken, refreshJwtToken);
+        SignInResponse response = new SignInResponse(accessJwtToken, refreshJwtToken);
+
         return ResponseHandler.responseBuilder(response);
     }
 }

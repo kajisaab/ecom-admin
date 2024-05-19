@@ -1,4 +1,4 @@
-package com.kajisaab.ecommerce.core.responseHandler;
+package com.kajisaab.ecommerce.core.responsehandler;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

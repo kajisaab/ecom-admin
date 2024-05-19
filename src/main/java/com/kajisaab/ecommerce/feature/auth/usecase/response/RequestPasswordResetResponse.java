@@ -4,11 +4,9 @@ import com.kajisaab.ecommerce.core.usecase.UsecaseResponse;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
-import lombok.NoArgsConstructor;
 
 @Data
-@Builder
 @AllArgsConstructor
-public class SignupResponse implements UsecaseResponse {
-    public String message;
+public class RequestPasswordResetResponse implements UsecaseResponse {
+    private String message;
 }

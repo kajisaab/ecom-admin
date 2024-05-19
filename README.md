@@ -90,10 +90,10 @@ ecommerce
 
 ### Running the Application
 1. Clone the repository
-    ````
+    ```
     git clone https://github.com/yourusername/ecommerce.git
     cd ecommerce
-    ````
+    
 2. Set up the database.
 
 

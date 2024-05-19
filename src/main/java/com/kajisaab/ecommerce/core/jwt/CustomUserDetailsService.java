@@ -28,15 +28,6 @@ public class CustomUserDetailsService implements UserDetailsService {
             throw new UsernameNotFoundException("User is not found");
         }
 
-        String loginCred = "";
-        if(username.equals(user.getUsername())){
-            loginCred = user.getUsername();
-        }
-
-        if(username.equals(user.getEmail())){
-            loginCred = user.getEmail();
-        }
-
         return org.springframework.security.core.userdetails.User
                 .withUserDetails(user)
                 .password(user.getUserCredential().getPassword())

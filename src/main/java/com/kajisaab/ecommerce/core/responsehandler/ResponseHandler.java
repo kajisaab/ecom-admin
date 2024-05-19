@@ -1,4 +1,4 @@
-package com.kajisaab.ecommerce.core.responseHandler;
+package com.kajisaab.ecommerce.core.responsehandler;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
