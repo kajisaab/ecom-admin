@@ -5,6 +5,9 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
+/**
+ * Get the user details of the authenticated user from the security context holder object in Spring Security.
+ */
 @Service
 public class UserService {
 
