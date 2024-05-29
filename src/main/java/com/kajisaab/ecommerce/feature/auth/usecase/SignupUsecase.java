@@ -49,15 +49,16 @@ public class SignupUsecase implements Usecase<SignupRequest, SignupResponse> {
         }
 
         String emailValidation = isNewUser(request.getEmail(), true);
-        String usernameValidation = isNewUser(request.getUserName(), false);
 
         if (emailValidation != null) {
             throw new BadRequestException(emailValidation);
-        }
+        };
+
+        String usernameValidation = isNewUser(request.getUserName(), false);
 
         if (usernameValidation != null) {
             throw new BadRequestException(usernameValidation);
-        }
+        };
 
         try {
             var user = User
