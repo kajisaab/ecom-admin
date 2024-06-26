@@ -32,7 +32,6 @@ public class CustomAuthenticationEntryPoint implements AuthenticationEntryPoint 
     @Override
     public void commence(HttpServletRequest request, HttpServletResponse response, AuthenticationException authException) throws IOException, ServletException {
         {
-            System.out.println("This is the request =====================> " + request.getHeader("Origin") );
             // Customize the response for unauthorized access
             logger.error("This is the auth Exception " + authException.getMessage());
 

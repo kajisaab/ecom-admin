@@ -4,6 +4,7 @@ import com.kajisaab.ecommerce.constants.UserRoleConstantEnum;
 import com.kajisaab.ecommerce.constants.UserTypeConstantEnum;
 import com.kajisaab.ecommerce.feature.auth.entity.User;
 import io.jsonwebtoken.lang.Objects;
+import jakarta.transaction.Transactional;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,6 +18,7 @@ import static org.junit.jupiter.api.Assertions.assertNull;
 
 @DataJpaTest
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
+@Transactional
 public class UserRepositoryTests {
 
     @Autowired
@@ -39,7 +41,7 @@ public class UserRepositoryTests {
 
     @Test
     void shouldFindUserByEmail(){
-        User userDetails = userRepository.findByEmailAndUserName("amankhadka102@gmail.com");
+        User userDetails = userRepository.findByEmailAndUserName("amankhadka101@gmail.com");
         assertEquals(userDetails, user);
     }
 

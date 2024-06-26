@@ -9,7 +9,9 @@ import com.kajisaab.ecommerce.feature.auth.entity.User;
 import com.kajisaab.ecommerce.feature.auth.repository.UserRepository;
 import com.kajisaab.ecommerce.feature.auth.usecase.request.SignInRequest;
 import com.kajisaab.ecommerce.feature.auth.usecase.response.SignInResponse;
-import lombok.RequiredArgsConstructor; 
+import lombok.RequiredArgsConstructor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
 import org.springframework.http.ResponseEntity;
@@ -24,6 +26,7 @@ public class SigninUsecase implements Usecase<SignInRequest, SignInResponse> {
 
     @Autowired
     private Environment env;
+    private final static Logger logger = LoggerFactory.getLogger(SigninUsecase.class);
 
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
@@ -31,39 +34,40 @@ public class SigninUsecase implements Usecase<SignInRequest, SignInResponse> {
 
     @Override
     public ResponseEntity<SignInResponse> execute(SignInRequest request) {
-        String violations = ValidationUtils.validate(request);
-        if (!Objects.isNull(violations)) {
-            throw new BadRequestException(violations);
-        }
+            String violations = ValidationUtils.validate(request);
+            if (!Objects.isNull(violations)) {
+                throw new BadRequestException(violations);
+            }
 
-        boolean isEmail;
-        isEmail = request.getUserId().contains("@") && request.getUserId().contains(".");
-        User user = userRepository.findByEmailAndUserName(request.getUserId());
+            boolean isEmail;
+            isEmail = request.getUserId().contains("@") && request.getUserId().contains(".");
+            User user = userRepository.findByEmailAndUserName(request.getUserId());
 
 
-        if(user == null){
-            throw new BadRequestException("User with " + request.getUserId() + (isEmail ? " email " : " username ") + "not found");
-        }
+            if (user == null) {
+                throw new BadRequestException("User with " + request.getUserId() + (isEmail ? " email " : " username ") + "not found");
+            }
 
-        String accessJwtToken = "";
+            String accessJwtToken = "";
 
-        String refreshJwtToken = "";
-        if (!passwordEncoder.matches(request.getPassword(), user.getPassword())) {
-            throw new BadRequestException("Invalid Credentials ");
-        }
+            String refreshJwtToken = "";
+            if (!passwordEncoder.matches(request.getPassword(), user.getPassword())) {
+                throw new BadRequestException("Invalid Credentials ");
+            }
 
-        if (!user.isActive()) {
-            throw new BadRequestException("User is disabled");
-        }
+            if (!user.isActive()) {
+                throw new BadRequestException("User is disabled");
+            }
 
-        accessJwtToken  = jwtService.generateToken(user);
+            accessJwtToken = jwtService.generateToken(user);
 
-        refreshJwtToken = jwtService.generateToken(user, env.getProperty("spring.env.token.refreshSecretKey"), 2592000000L);
+            refreshJwtToken = jwtService.generateToken(user, env.getProperty("spring.env.token.refreshSecretKey"), 2592000000L);
 
-        userRepository.updateRefreshToken(refreshJwtToken, user.getEmail());
+            userRepository.updateRefreshToken(refreshJwtToken, user.getEmail());
 
-        SignInResponse response = new SignInResponse(accessJwtToken, refreshJwtToken);
+            SignInResponse response = new SignInResponse(accessJwtToken, refreshJwtToken);
 
-        return ResponseHandler.responseBuilder(response);
+            return ResponseHandler.responseBuilder(response);
+
     }
 }
