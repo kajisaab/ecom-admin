@@ -90,7 +90,6 @@ public class SignupUsecase implements Usecase<SignupRequest, SignupResponse> {
 
             emailService.sendHtmlEmail(context, request.getEmail(), "otpCodeEmailTemplate");
 
-
             SignupResponse response = new SignupResponse("Successfully created account");
             return ResponseHandler.responseBuilder(response);
         } catch (Exception e) {
@@ -99,11 +98,13 @@ public class SignupUsecase implements Usecase<SignupRequest, SignupResponse> {
     }
 
     public String isNewUser(String emailOrUsername, boolean isEmail) {
-        User user = userRepository.findByEmailAndUserName(emailOrUsername);
-        if (user != null) {
-            return "User with " + emailOrUsername + (isEmail ? " email " : " username ") + "already exists";
+        if(emailOrUsername != null && !emailOrUsername.isEmpty()) {
+            User user = userRepository.findByEmailAndUserName(emailOrUsername);
+            if (user != null) {
+                return "User with " + emailOrUsername + (isEmail ? " email " : " username ") + "already exists";
+            };
+            return null;
         }
-        ;
         return null;
     }
 }

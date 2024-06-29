@@ -15,23 +15,23 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class SignupRequest implements UsecaseRequest {
-    @NotNull
+    @NotNull(message = "First Name cannot be null")
     @NotBlank(message = "First Name cannot be empty")
     private String firstName;
 
-    @NotNull
+    @NotNull(message="Last Name cannot be null")
     @NotBlank(message = "Last Name cannot be empty")
     private String lastName;
 
-    @NotNull
+    @NotNull(message = "Email cannot be null")
     @NotBlank(message = "Email cannot be empty")
     private String email;
 
-    @NotNull
+    @NotNull(message = "Password cannot be null")
     @Size(min = 8, max = 10, message = "Password must be in between 8 to 10")
     private String password;
 
-    @NotNull
+    @NotNull(message = "Username cannot be null")
     private String userName;
 
     @NotNull(message = "Phone Number cannot be null")
@@ -47,5 +47,4 @@ public class SignupRequest implements UsecaseRequest {
         this.userName = request.userName();
         this.phoneNumber = request.phoneNumber();
     }
-
 }
