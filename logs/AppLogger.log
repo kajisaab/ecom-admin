@@ -5637,3 +5637,21 @@ Caused by: java.lang.IllegalArgumentException: Could not resolve placeholder 'sp
     drop table if exists ecommerce.user_details cascade
 2024-06-29 10:47:45,444 ERROR [SpringApplicationShutdownHook] o.h.t.s.i.SchemaDropperImpl$DelayedDropActionImpl [SchemaDropperImpl.java:629] - HHH000478: Unsuccessful: 
     drop table if exists ecommerce.user_credential cascade
+2024-06-30 21:29:05,076 ERROR [main] o.h.e.j.s.SqlExceptionHelper [SqlExceptionHelper.java:150] - ERROR: duplicate key value violates unique constraint "user_details_phone_number_key"
+  Detail: Key (phone_number)=(9999999999) already exists.
+2024-06-30 21:29:05,096 ERROR [main] o.h.e.j.s.SqlExceptionHelper [SqlExceptionHelper.java:150] - ERROR: duplicate key value violates unique constraint "user_details_phone_number_key"
+  Detail: Key (phone_number)=(9999999999) already exists.
+2024-06-30 21:29:05,102 ERROR [main] o.h.e.j.s.SqlExceptionHelper [SqlExceptionHelper.java:150] - ERROR: duplicate key value violates unique constraint "user_details_phone_number_key"
+  Detail: Key (phone_number)=(9999999999) already exists.
+2024-06-30 21:29:08,467 ERROR [SpringApplicationShutdownHook] o.h.t.s.i.SchemaDropperImpl$DelayedDropActionImpl [SchemaDropperImpl.java:629] - HHH000478: Unsuccessful: 
+    alter table if exists ecommerce.otp_setting 
+       drop constraint if exists FKj726gojn1kkc9v20ebrnmm3fu
+2024-06-30 21:29:08,469 ERROR [SpringApplicationShutdownHook] o.h.t.s.i.SchemaDropperImpl$DelayedDropActionImpl [SchemaDropperImpl.java:629] - HHH000478: Unsuccessful: 
+    alter table if exists ecommerce.user_credential 
+       drop constraint if exists FK7slxfxtp2yxkqbgh9wbrtcfyq
+2024-06-30 21:29:08,469 ERROR [SpringApplicationShutdownHook] o.h.t.s.i.SchemaDropperImpl$DelayedDropActionImpl [SchemaDropperImpl.java:629] - HHH000478: Unsuccessful: 
+    drop table if exists ecommerce.otp_setting cascade
+2024-06-30 21:29:08,469 ERROR [SpringApplicationShutdownHook] o.h.t.s.i.SchemaDropperImpl$DelayedDropActionImpl [SchemaDropperImpl.java:629] - HHH000478: Unsuccessful: 
+    drop table if exists ecommerce.user_details cascade
+2024-06-30 21:29:08,470 ERROR [SpringApplicationShutdownHook] o.h.t.s.i.SchemaDropperImpl$DelayedDropActionImpl [SchemaDropperImpl.java:629] - HHH000478: Unsuccessful: 
+    drop table if exists ecommerce.user_credential cascade
